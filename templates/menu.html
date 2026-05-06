@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - BurgerHub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="menu-container">
+        <div class="header">
+            <h1>🍔 BurgerHub Express</h1>
+            <div class="user-info">
+                <span>Welcome, {{ user.username }}!</span>
+                <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+            </div>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        {% for category, items in categories.items() %}
+        <div class="category-section">
+            <h2 class="category-title">
+                {% if category == 'Burger' %}🍔 {% elif category == 'Sandwich' %}🥪 {% elif category == 'Chicken' %}🍗 {% elif category == 'Sides' %}🍟 {% else %}🥤 {% endif %}
+                {{ category }}
+            </h2>
+            <div class="food-grid">
+                {% for item in items %}
+                <div class="food-card">
+                    <img src="{{ item.image_url }}" alt="{{ item.name }}" class="food-image" onerror="this.src='https://via.placeholder.com/400x300?text=Food+Image'">
+                    <div class="food-info">
+                        <div class="food-name">{{ item.name }}</div>
+                        <span class="food-category">{{ item.category }}</span>
+                        <div class="food-price">PKR {{ item.price }}</div>
+                        <form action="{{ url_for('order_food', food_id=item.id) }}" method="GET">
+                            <button type="submit" class="btn-order">Order via EasyPaisa</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - BurgerHub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="confirmation-container">
+        <div class="success-icon">
+            ✅
+        </div>
+        <h2>Payment Successful!</h2>
+        <p>Thank you for your order. Your food will be prepared soon.</p>
+        
+        <div class="order-details">
+            <h3>Order Summary</h3>
+            {% for item in order.items %}
+                <p><strong>{{ item.food_item.name }}</strong> x{{ item.quantity }} = PKR {{ item.price_at_time * item.quantity }}</p>
+            {% endfor %}
+            <div class="amount">Total: PKR {{ order.total_amount }}</div>
+        </div>
+        
+        <div class="transaction-id">
+            Transaction ID: {{ order.transaction_id }}
+        </div>
+        
+        <a href="{{ url_for('menu') }}" class="btn-home">Order More Food</a>
+    </div>
+</body>
+</html>
